@@ -81,12 +81,21 @@ void wakeup_handler(){
       break;       
     default:
       //initRTC();
+      Serial.println("Woke up from unknown reason...");// to be removed for final version
+      initRTC();
+        // Initialize the sensors
+        initBME280();
+        initTmp102();       
+        // Initialize the SD card 
+        initSDCard();
+      handleDataLogging();
       break;
   }
 }
 
 void handleDataLogging() {
     Serial.println("Woke up for data logging...");// to be removed for final version
+    
     char time[10] = "hh:mm:ss";
     float rain=0.0;
     char date[12] = "dd/mm/yyyy";
@@ -101,26 +110,20 @@ void handleDataLogging() {
     temp= tmp102_read();
     hum= BME280_humidity_read();
     press= BME280_pressure_read();
-
+    Serial.println("humidity: " + String(hum));// to be removed for final version
+    Serial.println("pressure: " + String(press));// to be removed for final version
+    Serial.println("temperature: " + String(temp));// to be removed for final version
     /*calculate the rain*/
     rain=buckets_counter*0.0409;
     /*check if the timer has reached the limit(1 day reset)*/
-    check_reset_timer();
+    check_reset_timer();    
+    
+    char result1[100];    
+    snprintf(result1, sizeof(result1), "%.2f,%.2f,%.2f,%.2f,%s,%s,%d", rain, temp, hum, press, time, date, num_id);
     
     
-    char result1[50];
-    snprintf(result1, sizeof(result1), "%.4f,%s,%s,%d", rain, date, time, num_id);
-    char result2[100];
-    
-    snprintf(result2, sizeof(result2), "%.2f,%s", temp, result1);
-
-    //ds18b20.begin();
-    //ds18b20.requestTemperatures();
-    //float temp = ds18b20.getTempCByIndex(0);
-    //Serial.println(temp);
-    
-    Serial.println(result2);// to be removed for final version
-    logData("/rain_data.txt", result2, true);
+    Serial.println(result1);// to be removed for final version
+    logData("/rain_data.txt", result1, true);
 }
 
 void check_reset_timer(){

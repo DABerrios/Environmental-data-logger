@@ -15,6 +15,7 @@ void initRTC(){
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
     
   }
+  Serial.println("RTC initialized");
 }
 
 void RTC_get_time(char* time){

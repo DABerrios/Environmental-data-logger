@@ -66,7 +66,7 @@ void initBME280(){
         Serial.println("BME280 cannot connect. Freezing...");
         while (1);
     }
-    sensor_bme280.setReferencePressure(1013.25);
+    sensor_bme280.setReferencePressure(101600);
     sensor_bme280.setFilter(0);
     sensor_bme280.setMode(0);
     sensor_bme280.setPressureOverSample(16);
