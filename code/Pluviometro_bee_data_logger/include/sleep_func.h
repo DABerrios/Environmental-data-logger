@@ -10,12 +10,13 @@
 void wakeup_handler();
 void check_reset_timer();
 void handleDataLogging();
-void logData(const char *filename, const String &data,bool serialout);
+void logData(const char *filename, const String &data);
 
 
 extern esp_sleep_wakeup_cause_t wakeup_reason;
 extern int RTC_DATA_ATTR sec_to_micro;
 extern int RTC_DATA_ATTR sleep_interval;
+extern bool loraWANActive;
 
 
 

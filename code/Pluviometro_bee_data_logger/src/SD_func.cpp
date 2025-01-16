@@ -6,6 +6,11 @@
 #include <SPI.h>
 #include <FS.h>
 
+#include <SD_func.h>
+#include <main.h>
+
+SPIClass SPI2(HSPI);
+
 void appendFile(fs::FS &fs, const char * path, const char * message) {
   Serial.printf("Appending to file: %s\n", path);
 
@@ -63,9 +68,12 @@ void initSDCard(){
   Serial.printf("SD Card Size: %lluMB\n", cardSize);
 }
 void initSDlight(){
-    if (!SD.begin()) {
-    Serial.println("Card Mount Failed");
-    return;
+
+    SPI2.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS);
+    if (!SD.begin(SD_CS,SPI2))
+    {
+        Serial.println("SD Card Mount Failed");
+        return;
     }
     Serial.println("Card Mount Success");
 }
@@ -104,10 +112,10 @@ void readFile(fs::FS &fs, const char * path){
   file.close();
 }
 File openfile(fs::FS &fs, const char * path){
-    File file = fs.open(path);
+    File file = fs.open(path, FILE_APPEND);
     if (!file)
     {
-      Serial.println("Failed to open file for writing");
+      //Serial.println("Failed to open file for writing");
     }
     return file;
 }

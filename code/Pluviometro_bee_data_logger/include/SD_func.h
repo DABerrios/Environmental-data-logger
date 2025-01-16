@@ -5,7 +5,13 @@
 #include <SPI.h>
 #include <FS.h>
 
+#define SD_SCK 48
+#define SD_MISO 45
+#define SD_MOSI 46
+#define SD_CS 47
+
 void initSDCard();
+void initSDlight();
 void appendFile(fs::FS &fs, const char * path, const char * message);
 void writeFile(fs::FS &fs, const char * path, const char * message);
 void renameFile(fs::FS &fs, const char * path1, const char * path2);

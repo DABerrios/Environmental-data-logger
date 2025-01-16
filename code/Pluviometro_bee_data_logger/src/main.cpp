@@ -18,6 +18,7 @@
 #include <sleep_func.h>
 #include <RTC_func.h>
 #include <wifi_serv_ap.h>
+#include <Lora_otaa.h>
 
 
 
@@ -36,26 +37,37 @@ uint32_t RTC_DATA_ATTR counter_limit=10;
 Preferences preferences;
 
 void setup() {
+  
+  Serial.begin(115200);
   while(!Serial){ // wait for serial port to connect. Needed for native USB
     delay(1000);
   }
   
   bdl.begin();
   bdl.setPixelBrightness(255 / 2);
+  /*
+  bdl.setPixelColor(green);
+  delay(1000);
+  */
   Wire.begin();
   //initRTC(); // Initalize the RTC
   initwakeup();
-  
-   
+  /*
+  bdl.setPixelColor(blue);
+  delay(1000);
+  */
   //touchSleepWakeUpEnable(T3, THRESHOLD);
   wakeup_handler();
-
+  bdl.setPixelColor(purple);
   /*disable bluetooth and wifi*/
   btStop();
   esp_wifi_stop();
-  
-  
+  /*
+  bdl.setPixelColor(orange);
+  delay(1000);
+  */
   //initSDCard();
+  
 }
 
 void loop() {
@@ -78,17 +90,17 @@ void loop() {
         goToSleep();
       }     
   }
-  //else if(loraWANActive){
-    //os_runloop_once();
-    
-    //loraWANActive= false;
-  //}
+  else if(loraWANActive){
+    os_runloop_once();
+  }
   else{
     // If the server is not active, go to sleep
   //os_runloop_once();  
+  /*
   bdl.setPixelColor(BDL::colorWheel(color));
   color++;
-  delay(5000);  
+  delay(5000);
+  */
   goToSleep();    
   }  
   
@@ -102,6 +114,7 @@ void rain_logger(){
 
 void goToSleep(){
   Serial.println("Going to sleep");
+  bdl.setLDO2Power(false);
   esp_deep_sleep_start();
 }
 
