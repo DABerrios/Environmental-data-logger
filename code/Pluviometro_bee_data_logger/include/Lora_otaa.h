@@ -19,4 +19,7 @@ void initLoraotaa();
 void do_send(osjob_t* j);
 void do_send_ext();
 
+extern uint8_t mydata[];
+extern size_t ind;
+
 #endif /*LORA_OTAA_H */

@@ -20,4 +20,5 @@ extern int RTC_DATA_ATTR sleep_interval;
 extern int RTC_DATA_ATTR buckets_counter;
 extern uint32_t RTC_DATA_ATTR counter;
 extern uint32_t RTC_DATA_ATTR counter_limit;
+extern uint32_t RTC_DATA_ATTR last_line;
 #endif /*MAIN_H */

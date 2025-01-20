@@ -6,6 +6,7 @@
 #include <BDL.h>
 #include <main.h>
 #include <sleep_func.h>
+#include <data_processing.h>
 
 
 #ifdef COMPILE_REGRESSION_TEST
@@ -32,7 +33,9 @@ void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
 static const u1_t PROGMEM APPKEY[16] = { 0x77, 0x15, 0x51, 0xEA, 0xB4, 0xBD, 0x65, 0xE5, 0x2D, 0xFB, 0x3B, 0xE7, 0x67, 0xFB, 0xEF, 0x32 };
 void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
-static uint8_t mydata[] = "bee!";
+uint8_t mydata[15];
+size_t ind=0;
+
 static osjob_t sendjob;
 
 // Schedule TX every this many seconds (might become longer due to duty
@@ -186,7 +189,7 @@ void do_send(osjob_t* j){
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
         // Prepare upstream data transmission at the next possible time.
-        LMIC_setTxData2(1, mydata, sizeof(mydata)-1, 0);
+        LMIC_setTxData2(1, mydata, ind-1, 0);
         Serial.println(F("Packet queued"));
     }
     // Next TX is scheduled after TX_COMPLETE event.

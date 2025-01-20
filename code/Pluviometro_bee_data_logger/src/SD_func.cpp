@@ -115,7 +115,7 @@ File openfile(fs::FS &fs, const char * path){
     File file = fs.open(path, FILE_APPEND);
     if (!file)
     {
-      //Serial.println("Failed to open file for writing");
+      Serial.println("Failed to open file for writing");
     }
     return file;
 }

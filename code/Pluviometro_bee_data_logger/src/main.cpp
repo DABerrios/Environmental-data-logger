@@ -33,6 +33,7 @@ int RTC_DATA_ATTR buckets_counter = 0;
 int RTC_DATA_ATTR num_id = 0;
 uint32_t RTC_DATA_ATTR counter = 0;
 uint32_t RTC_DATA_ATTR counter_limit=10;
+uint32_t RTC_DATA_ATTR last_line = 0;
 
 Preferences preferences;
 

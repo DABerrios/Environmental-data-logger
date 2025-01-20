@@ -11,6 +11,7 @@
 #include <SD_func.h>
 #include <sensors.h>
 #include <Lora_otaa.h>
+#include <data_processing.h>
 
 
 bool loraWANActive = false;
@@ -77,7 +78,9 @@ void wakeup_handler(){
         counter++;
         if(counter>=counter_limit){
           counter=0;
-          //lora_otaa_tx();
+          data_processing("/rain_data.txt");
+          loraWANActive = true;
+          initLoraotaa();
         }
         detachInterrupt(34);
         //set the ESP32 to deep sleep
@@ -94,10 +97,8 @@ void wakeup_handler(){
       // Initialize the SD card 
       initSDlight();
       handleDataLogging();
-      loraWANActive = true;
-      Serial.println("starting lora transmission...");
-      initLoraotaa();
-      do_send_ext();
+      
+      data_processing("/rain_data.txt");
 
       
       break;
@@ -121,11 +122,11 @@ void handleDataLogging() {
     temp= tmp102_read();
     hum= BME280_humidity_read();
     press= BME280_pressure_read();
-    /*
+    
     Serial.println("humidity: " + String(hum));// to be removed for final version
     Serial.println("pressure: " + String(press));// to be removed for final version
     Serial.println("temperature: " + String(temp));// to be removed for final version
-    */
+    
     /*calculate the rain*/
     rain=buckets_counter*0.0409;
     /*check if the timer has reached the limit(1 day reset)*/
