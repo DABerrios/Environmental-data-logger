@@ -34,7 +34,8 @@ static const u1_t PROGMEM APPKEY[16] = { 0x77, 0x15, 0x51, 0xEA, 0xB4, 0xBD, 0x6
 void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
 uint8_t mydata[15];
-size_t ind=0;
+size_t ind = 0;
+static uint8_t data2[]={"test"};
 
 static osjob_t sendjob;
 
@@ -189,7 +190,14 @@ void do_send(osjob_t* j){
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
         // Prepare upstream data transmission at the next possible time.
-        LMIC_setTxData2(1, mydata, ind-1, 0);
+        for (size_t i = 0; i < ind; i++) {
+            Serial.print(mydata[i]);
+            if (i < ind - 1) {
+            Serial.print(" ");
+            }
+        }
+        Serial.println();
+        LMIC_setTxData2(1,mydata , ind, 0);
         Serial.println(F("Packet queued"));
     }
     // Next TX is scheduled after TX_COMPLETE event.
@@ -202,5 +210,8 @@ void initLoraotaa(){
     SPI.setFrequency(4E6); 
     os_init();
     LMIC_reset();
+    LMIC_setLinkCheckMode(0);
+    LMIC_setDrTxpow(DR_SF7,14);
+    LMIC_selectSubBand(1);
     do_send(&sendjob);  
 }

@@ -106,8 +106,9 @@ void data_processing(const char* fileName){
     int id = 0;
     sscanf(linebuffer[line_count-1].c_str(), "%f,%*f,%*f,%*f,%[^,],%[^,],%d", &rain, time, date, &id);
     snprintf(to_send, sizeof(to_send), "%.2f,%.2f,%.2f,%.2f,%s,%s,%d", rain, avrg_temp, avrg_hum, avrg_press, time, date, id);
+    ind = datacomp(to_send,mydata);
     Serial.println(to_send);
-    size_t ind = datacomp(to_send,mydata);
+    
     
     
 }
@@ -117,13 +118,7 @@ size_t datacomp(const String &line, uint8_t* data) {
     int day, month, year, hour, minute, second, id;
 
     // Parse the CSV line
-sscanf(line.c_str(), "%f,%f,%f,%f,%d:%d:%d,%d/%d/%d,%d", &rain, &avrg_temp, &avrg_hum, &avrg_press, &hour, &minute, &second, &day, &month, &year, &id);    Serial.println(year);
-    Serial.println(month);
-    Serial.println(day);
-    Serial.println(hour);
-    Serial.println(minute);
-    Serial.println(second);
-    Serial.println(id);
+    sscanf(line.c_str(), "%f,%f,%f,%f,%d:%d:%d,%d/%d/%d,%d", &rain, &avrg_temp, &avrg_hum, &avrg_press, &hour, &minute, &second, &day, &month, &year, &id);    Serial.println(year);
     // Convert data to compact binary format
     uint16_t rainInt = (uint16_t)(rain * 100);          
     uint16_t tempInt = (uint16_t)(avrg_temp * 100);     

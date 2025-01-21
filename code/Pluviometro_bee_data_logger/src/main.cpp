@@ -95,14 +95,7 @@ void loop() {
     os_runloop_once();
   }
   else{
-    // If the server is not active, go to sleep
-  //os_runloop_once();  
-  /*
-  bdl.setPixelColor(BDL::colorWheel(color));
-  color++;
-  delay(5000);
-  */
-  goToSleep();    
+    goToSleep();    
   }  
   
 }

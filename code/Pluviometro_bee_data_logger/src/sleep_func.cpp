@@ -81,6 +81,7 @@ void wakeup_handler(){
           data_processing("/rain_data.txt");
           loraWANActive = true;
           initLoraotaa();
+          do_send_ext();
         }
         detachInterrupt(34);
         //set the ESP32 to deep sleep
@@ -97,10 +98,11 @@ void wakeup_handler(){
       // Initialize the SD card 
       initSDlight();
       handleDataLogging();
-      
       data_processing("/rain_data.txt");
-
-      
+      loraWANActive = true;
+      Serial.println("starting lora transmission...");
+      initLoraotaa();
+      //do_send_ext();
       break;
   }
 }

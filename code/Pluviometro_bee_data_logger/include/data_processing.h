@@ -8,4 +8,6 @@ void saveLastPosition(unsigned long position);
 size_t datacomp(const String &line, uint8_t* data);
 void datadecomp(const uint8_t* data, size_t size);
 
+
+
 #endif /*DATA_PROCESSING_H */
