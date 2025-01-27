@@ -1,3 +1,20 @@
+/**
+ * Payload formatter for The Things Stack.
+ * Decodes the given uplink input bytes into a readable JSON format.
+ *
+ * @param {Object} input - The uplink input object.
+ * @param {Uint8Array} input.bytes - The payload bytes to decode.
+ * @returns {Object} The decoded data in JSON format.
+ * @returns {Object} return.data - The decoded sensor data.
+ * @returns {string} return.data.rain - Rainfall in mm.
+ * @returns {string} return.data.temperature - Temperature in °C.
+ * @returns {string} return.data.humidity - Humidity in %.
+ * @returns {string} return.data.pressure - Atmospheric pressure in hPa.
+ * @returns {string} return.data.date - Date in DD/MM/YYYY format.
+ * @returns {string} return.data.time - Time in HH:MM:SS format.
+ * @returns {number} return.data.id - Sensor ID.
+ * @returns {Object} [return.errors] - Errors encountered during decoding.
+ */
 function decodeUplink(input) {
     const bytes = input.bytes;
     if (bytes.length < 13) {

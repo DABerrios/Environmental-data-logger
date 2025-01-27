@@ -31,7 +31,7 @@ void saveLastPosition(unsigned long position) {
  * If the key does not exist, it defaults to 0.
  */
 void readLastPosition() {
-    preferences.begin("log_numb", false);
+    preferences.begin("log_numb", false); 
     //last_line = preferences.getInt("last_line", 0);
 }
 
@@ -113,6 +113,28 @@ void data_processing(const char* fileName){
     
 }
 
+/**
+ * @brief Compresses a CSV line of environmental data into a compact binary format.
+ *
+ * This function takes a CSV line containing environmental data and converts it into a compact binary format.
+ * The data includes rain, average temperature, average humidity, average pressure, timestamp, and an ID.
+ *
+ * @param line The CSV line containing the environmental data.
+ * @param data A pointer to the array where the compact binary data will be stored.
+ * @return The total size of the packed data.
+ *
+ * The CSV line should be in the following format:
+ * rain,avrg_temp,avrg_hum,avrg_press,hour:minute:second,day/month/year,id
+ *
+ * The binary format is as follows:
+ * - Rain: 2 bytes (uint16_t)
+ * - Average Temperature: 2 bytes (uint16_t)
+ * - Average Humidity: 2 bytes (uint16_t)
+ * - Average Pressure: 3 bytes (uint32_t, only 24 bits used)
+ * - Date: 2 bytes (uint16_t, encoded as ((year - 2000) << 9) | (month << 5) | day)
+ * - Time: 2 bytes (uint16_t, encoded as (hour << 11) | (minute << 5) | (second / 2))
+ * - ID: 1 byte (uint8_t)
+ */
 size_t datacomp(const String &line, uint8_t* data) {
     float rain, avrg_temp, avrg_hum, avrg_press;
     int day, month, year, hour, minute, second, id;
@@ -166,8 +188,8 @@ size_t datacomp(const String &line, uint8_t* data) {
  *
  * The decoded values are printed to the serial output.
  *
- * @note If the size of the data array is less than 14 bytes, an error message is printed
- *       and the function returns without processing the data.
+ * @note for testing purposes only
+ * 
  */
 void datadecomp(const uint8_t* data, size_t size) {
     if (size < 14) {

@@ -107,6 +107,19 @@ void wakeup_handler(){
   }
 }
 
+/**
+ * @brief Handles the data logging process.
+ *
+ * This function performs the following tasks:
+ * - Retrieves the current time and date from the RTC.
+ * - Reads temperature, humidity, and pressure data from the sensors.
+ * - Calculates the amount of rain based on the bucket counter.
+ * - Checks if the timer has reached the limit for a daily reset.
+ * - Formats the collected data into a string.
+ * - Logs the formatted data to a file.
+ *
+ * @note The function contains debug print statements that should be removed for the final version.
+ */
 void handleDataLogging() {
     //Serial.println("Woke up for data logging...");// to be removed for final version
     
@@ -142,11 +155,27 @@ void handleDataLogging() {
     logData("/rain_data.txt", result1);
 }
 
+/**
+ * @brief Resets the buckets counter if the total sleep time exceeds or equals 24 hours.
+ *
+ * This function checks if the product of the counter and sleep_interval is greater than or equal to 86400 seconds (24 hours).
+ * If the condition is met, it resets the buckets_counter to 0.
+ */
 void check_reset_timer(){
     if (counter*sleep_interval >= 86400){
     buckets_counter = 0;
     }
 }
+/**
+ * @brief Logs data to a specified file on the SD card.
+ *
+ * This function opens the specified file in append mode and writes the provided
+ * data to it. If the file is successfully opened, the data is written and the file
+ * is closed. A delay of 1 second is added after writing the data.
+ *
+ * @param filename The name of the file to which data will be logged.
+ * @param data The data to be written to the file.
+ */
 void logData(const char *filename, const String &data) {
   //Serial.println("Writing to file 1");// to be removed for final version
   File file = openfile(SD,filename);// Open the file in append mode
