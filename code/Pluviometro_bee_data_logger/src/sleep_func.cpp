@@ -89,20 +89,7 @@ void wakeup_handler(){
       break;       
     default:
       
-      //initRTC();
-      //Serial.println("Woke up from unknown reason...");// to be removed for final version
-      initRTC();
-      // Initialize the sensors
-      initBME280();
-      initTmp102();       
-      // Initialize the SD card 
-      initSDlight();
-      handleDataLogging();
-      data_processing("/rain_data.txt");
-      loraWANActive = true;
-      Serial.println("starting lora transmission...");
-      initLoraotaa();
-      //do_send_ext();
+      goToSleep();
       break;
   }
 }
